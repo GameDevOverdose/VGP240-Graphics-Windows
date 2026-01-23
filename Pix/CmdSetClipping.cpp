@@ -1,5 +1,6 @@
 #include "CmdSetClipping.h"
 #include "Clipper.h"
+#include <XEngine.h>
 
 bool CmdSetClipping::Execute(const std::vector <std::string>& params)
 {
@@ -8,9 +9,10 @@ bool CmdSetClipping::Execute(const std::vector <std::string>& params)
 		return false;
 	}
 
+	//bool clip = params[0] == "true";
 	std::string clipBoolean = params[0];
 
-	//std::transform(clipBoolean.begin(), clipBoolean.end(), clipBoolean.begin(), [](unsigned char c) { return std::tolower(c); });
+	std::transform(clipBoolean.begin(), clipBoolean.end(), clipBoolean.begin(), [](unsigned char c) { return std::tolower(c); });
 
 	if (clipBoolean == "true")
 	{
