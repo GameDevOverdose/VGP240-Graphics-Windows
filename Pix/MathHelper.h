@@ -2,6 +2,7 @@
 
 #include "Vector2.h"
 #include "Vector3.h"
+#include "Matrix4.h"
 
 namespace MathHelper
 {
@@ -20,4 +21,17 @@ namespace MathHelper
 	float Dot(const Vector3& a, const Vector3& b);
 
 	Vector3 Cross(const Vector3& a, const Vector3& b);
+
+	//Translates vector position and rotation
+	Vector3 TransformCoord(const Vector3& v, const Matrix4& m);
+	//Only translates vectors rotation
+	Vector3 TransformNormal(const Vector3& v, const Matrix4& m);
+
+	//inverse matrix, used to remove matrix, m * inverse m is identity
+	Matrix4 Inverse(const Matrix4& m);
+	//Flips matrix, generally for swapping hand coordinate systems
+	Matrix4 Transpose(const Matrix4& m);
+	//Used to get the inverse matrix
+	Matrix4 Adjoint(const Matrix4& m);
+	float Determinant(const Matrix4& m);
 }
