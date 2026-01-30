@@ -15,12 +15,6 @@ PrimativesManager::PrimativesManager()
 
 bool PrimativesManager::BeginDraw(Topology topology)
 {
-	//////////////////////////////////////// TO REMOVE
-	Matrix4 testMatrix = Matrix4::RotationY(0.3f);
-	Matrix4 invTest = MathHelper::Inverse(testMatrix);
-	Matrix4 result = testMatrix * invTest;
-	//////////////////////////////////////////////////
-
 	mVertexBuffer.clear();
 	mToplogy = topology;
 	mDrawBegin = true;
