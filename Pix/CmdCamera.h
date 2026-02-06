@@ -13,7 +13,7 @@ public:
 	const char* GetDescription() override
 	{
 		return
-			"SetCameraPosition(x, y, z)\n"
+			"SetCameraPosition(pos)\n"
 			"\n"
 			"- Sets the camera's position";
 	}
@@ -32,9 +32,9 @@ public:
 	const char* GetDescription() override
 	{
 		return
-			"SetCameraDirection(x, y, z)\n"
+			"SetCameraDirection(dir)\n"
 			"\n"
-			"- Sets the camera's direction";
+			"- Sets the camera's direction (degrees)";
 	}
 
 	bool Execute(const std::vector <std::string>& params) override;
@@ -51,7 +51,7 @@ public:
 	const char* GetDescription() override
 	{
 		return
-			"SetCameraNear(dist)\n"
+			"SetCameraNear(nearPlane)\n"
 			"\n"
 			"- Sets the distance of the camera's near plane";
 	}
@@ -70,7 +70,7 @@ public:
 	const char* GetDescription() override
 	{
 		return
-			"SetCameraFar(dist)\n"
+			"SetCameraFar(farPlane)\n"
 			"\n"
 			"- Sets the distance of the camera's far plane";
 	}
