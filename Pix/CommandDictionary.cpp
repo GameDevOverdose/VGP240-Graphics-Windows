@@ -3,6 +3,8 @@
 #include "CmdDrawPixel.h"
 #include "CmdSetResolution.h"
 #include "CmdVarFloat.h"
+#include "CmdVarInt.h"
+#include "CmdVarBool.h"
 #include "CmdSetColor.h"
 
 #include "CmdBeginDraw.h"
@@ -11,6 +13,8 @@
 #include "CmdSetFillMode.h"
 #include "CmdSetViewport.h"
 #include "CmdSetClipping.h"
+#include "CmdSetCullMode.h"
+#include "CmdEnableDepthBuffer.h"
 
 #include "CmdMatrixStack.h"
 #include "CmdCamera.h"
@@ -32,16 +36,20 @@ CommandDictionary::CommandDictionary()
 
 	// Variable commands
 	RegisterCommand<CmdVarFloat>();
+	RegisterCommand<CmdVarInt>();
+	RegisterCommand<CmdVarBool>();
 
 	// Rasterization commands
 	RegisterCommand<CmdDrawPixel>();
 	RegisterCommand<CmdSetColor>();
+	RegisterCommand<CmdEnableDepthBuffer>();
 
 	// Primitives commands
 	RegisterCommand<CmdBeginDraw>();
 	RegisterCommand<CmdEndDraw>();
 	RegisterCommand<CmdVertex>();
 	RegisterCommand<CmdSetFillMode>();
+	RegisterCommand<CmdSetCullMode>();
 
 	// Matrix Stack commands (makes object world transform)
 	RegisterCommand<CmdPushTranslation>();
