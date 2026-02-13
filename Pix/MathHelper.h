@@ -37,5 +37,6 @@ namespace MathHelper
 	Matrix4 Transpose(const Matrix4& m);
 	//Used to get the inverse matrix
 	Matrix4 Adjoint(const Matrix4& m);
+	//Used to get the determinant of a matrix
 	float Determinant(const Matrix4& m);
 }
