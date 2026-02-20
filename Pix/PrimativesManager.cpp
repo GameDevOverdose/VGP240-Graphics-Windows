@@ -3,6 +3,7 @@
 #include "Clipper.h"
 #include "MatrixStack.h"
 #include "Camera.h"
+#include "LightManager.h"
 
 extern float gResolutionX;
 extern float gResolutionY;
@@ -120,9 +121,10 @@ bool PrimativesManager::EndDraw()
 	Matrix4 matScreen = GetScreenTransform();
 
 	// get the calculation to NDC Space
-	Matrix4 matNDC = matWorld * matView * matProj;
+	Matrix4 matNDC = matView * matProj;
 
 	Rasterizer* rasterizer = Rasterizer::Get();
+	LightManager* lm = LightManager::Get();
 
 	switch (mToplogy)
 	{
@@ -156,6 +158,21 @@ bool PrimativesManager::EndDraw()
 
 			if (mApplyTransform)
 			{
+				// conver triangle position to World Space
+				for (uint32_t v = 0; v < triangle.size(); ++v)
+				{
+					triangle[v].pos = MathHelper::TransformCoord(triangle[v].pos, matWorld);
+				}
+
+				// calculate the normal in World Space
+				Vector3 faceNormal = CreateFaceNormal(triangle);
+
+				// apply lighting in World spaxe
+				for (uint32_t v = 0; v < triangle.size(); ++v)
+				{
+					triangle[v].color *= lm->ComputeLightColor(triangle[v].pos, faceNormal);
+				}
+
 				// convert triangle positions to NDC space
 				for (uint32_t v = 0; v < triangle.size(); ++v)
 				{
