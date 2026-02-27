@@ -30,7 +30,7 @@ void MaterialManager::SetMaterialDiffuse(const X::Color& color)
 	mDiffuse = color;
 }
 
-void MaterialManager::SetMateriaSpecular(const X::Color& color)
+void MaterialManager::SetMaterialSpecular(const X::Color& color)
 {
 	mSpecular = color;
 }

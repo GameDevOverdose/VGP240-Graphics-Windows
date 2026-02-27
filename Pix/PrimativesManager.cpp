@@ -126,6 +126,8 @@ bool PrimativesManager::EndDraw()
 	Rasterizer* rasterizer = Rasterizer::Get();
 	LightManager* lm = LightManager::Get();
 
+	ShadeMode shadeMode = rasterizer->GetShadeMode();
+
 	switch (mToplogy)
 	{
 	case Topology::Point:
@@ -158,19 +160,41 @@ bool PrimativesManager::EndDraw()
 
 			if (mApplyTransform)
 			{
-				// conver triangle position to World Space
+				// if the vertex does not have a normal, give it the face normal in local space
+				if (MathHelper::CheckEqual(MathHelper::MagnitudeSquared(triangle[0].norm), 0.0f))
+				{
+					// calculate the normal in local Space
+					Vector3 faceNormal = CreateFaceNormal(triangle);
+
+					for (uint32_t v = 0; v < triangle.size(); ++v)
+					{
+						triangle[v].norm = faceNormal;
+					}
+				}
+
+				// convert triangle position to World Space
 				for (uint32_t v = 0; v < triangle.size(); ++v)
 				{
 					triangle[v].pos = MathHelper::TransformCoord(triangle[v].pos, matWorld);
+					triangle[v].posWorld = triangle[v].pos;
+					triangle[v].norm = MathHelper::TransformNormal(triangle[v].norm, matWorld);
 				}
 
-				// calculate the normal in World Space
-				Vector3 faceNormal = CreateFaceNormal(triangle);
-
-				// apply lighting in World spaxe
-				for (uint32_t v = 0; v < triangle.size(); ++v)
+				// Flat shading is vertex based
+				if (shadeMode == ShadeMode::Flat)
 				{
-					triangle[v].color *= lm->ComputeLightColor(triangle[v].pos, faceNormal);
+					triangle[0].color *= lm->ComputeLightColor(triangle[0].pos, triangle[0].norm);
+					triangle[1].color = triangle[0].color;
+					triangle[2].color = triangle[0].color;
+				}
+				// Gourard shading is vertex based
+				else if (shadeMode == ShadeMode::Gouraud)
+				{
+					// apply lighting in World space (Gouraud Shading)
+					for (uint32_t v = 0; v < triangle.size(); ++v)
+					{
+						triangle[v].color *= lm->ComputeLightColor(triangle[v].pos, triangle[v].norm);
+					}
 				}
 
 				// convert triangle positions to NDC space
