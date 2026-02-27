@@ -15,7 +15,7 @@ public:
 		return
 			"SetMaterialEmissive(r, g, b)\n"
 			"\n"
-			"- sets the emisiviness of the material";
+			"- sets the emissive color of the material";
 	}
 
 	bool Execute(const std::vector<std::string>& params) override;
