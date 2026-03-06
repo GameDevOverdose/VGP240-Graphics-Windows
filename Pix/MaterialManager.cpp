@@ -35,7 +35,7 @@ void MaterialManager::SetMaterialSpecular(const X::Color& color)
 	mSpecular = color;
 }
 
-void MaterialManager::SetMateriaShininess(float shininess)
+void MaterialManager::SetMaterialShininess(float shininess)
 {
 	mShininess = shininess;
 }

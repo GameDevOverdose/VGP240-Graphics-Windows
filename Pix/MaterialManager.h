@@ -13,7 +13,7 @@ public:
 	void SetMaterialAmbient(const X::Color& color);
 	void SetMaterialDiffuse(const X::Color& color);
 	void SetMaterialSpecular(const X::Color& color);
-	void SetMateriaShininess(float shininess);
+	void SetMaterialShininess(float shininess);
 
 	const X::Color& GetMaterialEmissive() const;
 	const X::Color& GetMaterialAmbient() const;

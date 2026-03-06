@@ -55,7 +55,7 @@ bool CmdSetMaterialDiffuse::Execute(const std::vector<std::string>& params)
 
 bool CmdSetMaterialSpecular::Execute(const std::vector<std::string>& params)
 {
-	if (params.size() > 3)
+	if (params.size() < 3)
 	{
 		return false;
 	}
@@ -77,7 +77,7 @@ bool CmdSetMaterialShininess::Execute(const std::vector<std::string>& params)
 		return false;
 	}
 
-	MaterialManager::Get()->SetMateriaShininess(VariableCache::Get()->GetFloat(params[0]));
+	MaterialManager::Get()->SetMaterialShininess(VariableCache::Get()->GetFloat(params[0]));
 
 	return true;
 }
