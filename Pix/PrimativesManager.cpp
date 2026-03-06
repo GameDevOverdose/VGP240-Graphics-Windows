@@ -77,11 +77,17 @@ PrimativesManager::PrimativesManager()
 void PrimativesManager::OnNewFrame()
 {
 	mCullMode = CullMode::Back;
+	mCorrectUV = false;
 }
 
 void PrimativesManager::SetCullMode(CullMode mode)
 {
 	mCullMode = mode;
+}
+
+void PrimativesManager::SetCorrectUV(bool correctUV)
+{
+	mCorrectUV = correctUV;
 }
 
 bool PrimativesManager::BeginDraw(Topology topology, bool applyTransform)
@@ -180,20 +186,36 @@ bool PrimativesManager::EndDraw()
 					triangle[v].norm = MathHelper::TransformNormal(triangle[v].norm, matWorld);
 				}
 
-				// Flat shading is vertex based
-				if (shadeMode == ShadeMode::Flat)
+				// if color.z >= 0.0f, then it is a colored shape, otherwise its a texture
+				if (triangle[0].color.z >= 0.0f)
 				{
-					triangle[0].color *= lm->ComputeLightColor(triangle[0].pos, triangle[0].norm);
-					triangle[1].color = triangle[0].color;
-					triangle[2].color = triangle[0].color;
+					// Flat shading is vertex based
+					if (shadeMode == ShadeMode::Flat)
+					{
+						triangle[0].color *= lm->ComputeLightColor(triangle[0].pos, triangle[0].norm);
+						triangle[1].color = triangle[0].color;
+						triangle[2].color = triangle[0].color;
+					}
+					// Gourard shading is vertex based
+					else if (shadeMode == ShadeMode::Gouraud)
+					{
+						// apply lighting in World space (Gouraud Shading)
+						for (uint32_t v = 0; v < triangle.size(); ++v)
+						{
+							triangle[v].color *= lm->ComputeLightColor(triangle[v].pos, triangle[v].norm);
+						}
+					}
 				}
-				// Gourard shading is vertex based
-				else if (shadeMode == ShadeMode::Gouraud)
+				else if (mCorrectUV)
 				{
-					// apply lighting in World space (Gouraud Shading)
+					// apply the corrective UV in view space
+					// at this point we're in world space
 					for (uint32_t v = 0; v < triangle.size(); ++v)
 					{
-						triangle[v].color *= lm->ComputeLightColor(triangle[v].pos, triangle[v].norm);
+						Vector3 viewSpacePos = MathHelper::TransformCoord(triangle[v].posWorld, matView);
+						triangle[v].color.x /= viewSpacePos.z;
+						triangle[v].color.y /= viewSpacePos.z;
+						triangle[v].color.w = 1.0f / viewSpacePos.z;
 					}
 				}
 

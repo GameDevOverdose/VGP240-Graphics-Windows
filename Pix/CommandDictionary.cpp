@@ -22,6 +22,9 @@
 #include "CmdSetShadeMode.h"
 #include "CmdModel.h"
 #include "CmdMaterial.h"
+#include "CmdSetTexture.h"
+#include "CmdSetCorrectUV.h"
+#include "CmdSetAddressMode.h"
 
 CommandDictionary* CommandDictionary::Get()
 {
@@ -56,6 +59,7 @@ CommandDictionary::CommandDictionary()
 	RegisterCommand<CmdSetFillMode>();
 	RegisterCommand<CmdSetCullMode>();
 	RegisterCommand<CmdModel>();
+	RegisterCommand<CmdSetCorrectUV>();
 
 	// Matrix Stack commands (makes object world transform)
 	RegisterCommand<CmdPushTranslation>();
@@ -81,12 +85,13 @@ CommandDictionary::CommandDictionary()
 	RegisterCommand<CmdAddSpotLight>();
 
 	// Material commands
-
 	RegisterCommand<CmdSetMaterialEmissive>();
 	RegisterCommand<CmdSetMaterialAmbient>();
 	RegisterCommand<CmdSetMaterialDiffuse>();
 	RegisterCommand<CmdSetMaterialSpecular>();
 	RegisterCommand<CmdSetMaterialShininess>();
+	RegisterCommand<CmdSetTexture>();
+	RegisterCommand<CmdSetAddressMode>();
 }
 
 TextEditor::LanguageDefinition CommandDictionary::GenerateLanguageDefinition()

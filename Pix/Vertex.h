@@ -8,7 +8,7 @@ struct Vertex
 	Vector3 pos;		// position along the graphics pipeline, local to screen space
 	Vector3 posWorld;	// position in world space
 	Vector3 norm;		// normal in world space
-	X::Color color;		// color of the vertex
+	X::Color color;		// color of the vertex / OR / is the UV coordinated of a texture
 };
 
 inline Vector3 LerpPosition(const Vector3& a, const Vector3& b, float t)
